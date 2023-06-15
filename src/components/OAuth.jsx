@@ -9,6 +9,9 @@ import { db } from "../firebase";
 import { getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
+
+
+
 export default function OAuth() {
   const navigate = useNavigate();
   async function onGooleClick() {
