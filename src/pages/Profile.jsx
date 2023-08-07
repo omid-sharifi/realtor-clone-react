@@ -2,6 +2,7 @@ import {React,  useEffect } from 'react'
 
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
@@ -84,6 +85,21 @@ export default function Profile() {
     }
     fetchUserListings();
   }, [auth.currentUser.uid]);
+  async function onDelete(listingID){
+    if(window.confirm("Are you sure you want to delete?")){
+      //we use firebase code to delete the list from fireStore
+      await deleteDoc(doc(db, "listings", listingID))
+      const updatedListings = listings.filter(
+        (listing)=> listing.id !== listingID
+      );
+      setListings(updatedListings);
+      toast.success("Successfully deleted the listing");
+    }
+
+  }
+  function onEdit(listingID){
+    navigate(`/edit-listing/${listingID}`)
+  }
 
   return (
     <>  
@@ -149,6 +165,8 @@ export default function Profile() {
                 key={listing.id} 
                 id={listing.id} 
                 listing={listing.data}
+                onDelete={()=>onDelete(listing.id)}
+                onEdit={()=>onEdit(listing.id)}
                 />
 
               ))}
